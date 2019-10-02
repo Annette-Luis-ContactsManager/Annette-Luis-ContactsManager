@@ -70,6 +70,7 @@ public class appMethods {
         try {
             contactList = Files.readAllLines(contactsPath);
             for (int i = 0; i < contactList.size(); i += 1) {
+                System.out.println("Name\t\t|\tPhone Number\t|");
                 System.out.println(contactList.get(i));
             }
         } catch (IOException e) {
@@ -91,11 +92,15 @@ public class appMethods {
 
     public static void deleteContacts(String contact, String directory, String filename) {
         try {
-            Files.write(
-                    Paths.get(directory, filename),
-                    Arrays.asList(contact),
-                    StandardOpenOption.APPEND
-            );
+            List<String> lines = Files.readAllLines(Paths.get(directory, filename));
+            List<String> newList = new ArrayList<>();
+            for (String line : lines) {
+                if (line.contains(contact)) {
+                    continue;
+                }
+                newList.add(line);
+            }
+            Files.write(Paths.get("data", "contacts.txt"), newList);
         } catch (IOException e) {
             e.printStackTrace();
         }
