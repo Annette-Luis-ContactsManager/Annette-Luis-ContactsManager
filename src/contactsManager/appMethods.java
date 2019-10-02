@@ -11,19 +11,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class appMethods {
+
     private static Scanner input = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        Input input = new Input();
 
-        int userInput;
-        boolean willContinue;
-        do {
-            showMenu();
-            userInput = input.getInt(1, 5);
-            willContinue = menuOptions(userInput);
-        } while (willContinue);
-    }
 
     /// this method displays the options to the user
     public static void showMenu() {
@@ -115,7 +106,7 @@ public class appMethods {
                     System.out.println(line);
                     continue;
                 }
-                newList.add(line);
+                newList.add(line); //* Appends the specified element to the end of this list (optional operation).
             }
             Files.write(Paths.get("data", "contacts.txt"), newList);
         } catch (IOException e) {
