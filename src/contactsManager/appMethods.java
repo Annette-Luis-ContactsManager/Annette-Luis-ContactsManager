@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class appMethods {
+public class appMethods extends Input {
 
     private static Scanner input = new Scanner(System.in);
 
@@ -31,12 +31,10 @@ public class appMethods {
 
         switch (userChoice) {
             case 1:
-                readContacts("data", "contacts.txt");
+                readContacts();
                 break;
             case 2:
-                System.out.println("Enter the first name, last name, & phone number of the contact you would like to add");
-                String add = input.nextLine().trim().toLowerCase();
-                addContacts(add, "data", "contacts.txt");
+                addContacts();
                 break;
             case 3:
                 System.out.println("Enter the name of the contact you would like to search");
@@ -55,13 +53,13 @@ public class appMethods {
         }
         return output;
     }
-    public static void readContacts(String directory, String filename) {
-        Path contactsPath = Paths.get(directory, filename);
+    public static void readContacts() {
+        Path contactsPath = Paths.get("data", "contacts.txt");
         List<String> contactList = new ArrayList<>();
         try {
             contactList = Files.readAllLines(contactsPath);
+            System.out.println("Name\t\t\t| Phone Number |");
             for (int i = 0; i < contactList.size(); i += 1) {
-                System.out.println("Name\t\t|\tPhone Number\t|");
                 System.out.println(contactList.get(i));
             }
         } catch (IOException e) {
@@ -69,11 +67,19 @@ public class appMethods {
         }
     }
 
-    public static void addContacts(String contact, String directory, String filename) {
+    public static void addContacts() {
+        System.out.println("Enter the new contact's first name: ");
+        String firstName = input.nextLine();
+        System.out.println("Enter the new contact's last name: ");
+        String lastName = input.nextLine();
+        String fullName = firstName + " " + lastName;
+        System.out.println("Enter your Phone Number: ");
+        String num = input.nextLine();
+        String contact = fullName + "\t| " + num + "\t| ";
         try {
             Files.write(
-                    Paths.get(directory, filename),
-                    Arrays.asList(contact),
+                    Paths.get("data", "contacts.txt"),
+                     Arrays.asList(contact),
                     StandardOpenOption.APPEND
             );
         } catch (IOException e) {
