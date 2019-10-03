@@ -2,7 +2,7 @@ package contactsManager;
 
 import java.util.Scanner;
 
-public class contactManagerTest {
+public class contactManagerApp {
 
     private static Scanner input = new Scanner(System.in);
 
