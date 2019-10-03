@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class appMethods extends Input {
-
     private static Scanner input = new Scanner(System.in);
 
-    /// this method displays the options to the user
     public static void showMenu() {
         System.out.println("1. View contacts.\n" +
                 "2. Add a new contact.\n" +
