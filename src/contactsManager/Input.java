@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Input {
-
     private Scanner input = new Scanner(System.in);
 
     public String getString() {
@@ -24,7 +23,7 @@ public class Input {
         try {
             number = Integer.parseInt(getString());
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            System.out.println("Must enter a number input");
             return getInt();
         }
         return number;
@@ -32,11 +31,15 @@ public class Input {
 
     public int getInt(int min, int max) {
         int num = getInt();
-
         if (num < min || num > max) {
-            System.out.println("Error: outside of the boundaries.");
+            System.out.println("Outside of boundaries");
             return getInt(min, max);
         }
         return num;
+    }
+
+    public static void main(String[] args) {
+        Input input = new Input();
+        input.getInt(1, 5);
     }
 }

@@ -14,8 +14,6 @@ public class appMethods extends Input {
 
     private static Scanner input = new Scanner(System.in);
 
-
-
     /// this method displays the options to the user
     public static void showMenu() {
         System.out.println("1. View contacts.\n" +
@@ -23,7 +21,7 @@ public class appMethods extends Input {
                 "3. Search a contact by name.\n" +
                 "4. Delete an existing contact.\n" +
                 "5. Exit.\n" +
-                "Enter an option (1, 2, 3, 4 or 5):");
+                "Enter an option:");
     }
 
     public static boolean menuOptions(int userChoice) {
@@ -32,33 +30,34 @@ public class appMethods extends Input {
         switch (userChoice) {
             case 1:
                 readContacts();
+                input.nextLine();
                 break;
             case 2:
                 addContacts();
+                input.nextLine();
                 break;
             case 3:
-                System.out.println("Enter the name of the contact you would like to search");
-                String search = input.nextLine().trim().toLowerCase();
-                searchContacts(search,"data", "contacts.txt");
+                searchContacts();
+                input.nextLine();
                 break;
             case 4:
-                System.out.println("Enter the name of the contact you would like to delete");
-                String delete = input.nextLine().trim().toLowerCase();
-                deleteContacts(delete, "data", "contacts.txt");
+                deleteContacts();
                 break;
             case 5:
-                System.out.println("Exit");
+                System.out.println("Exiting now");
                 output = false;
                 break;
         }
         return output;
     }
+
     public static void readContacts() {
         Path contactsPath = Paths.get("data", "contacts.txt");
         List<String> contactList = new ArrayList<>();
         try {
             contactList = Files.readAllLines(contactsPath);
             System.out.println("Name\t\t\t| Phone Number |");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (int i = 0; i < contactList.size(); i += 1) {
                 System.out.println(contactList.get(i));
             }
@@ -68,47 +67,51 @@ public class appMethods extends Input {
     }
 
     public static void addContacts() {
-        System.out.println("Enter the new contact's first name: ");
-        String firstName = input.nextLine();
-        System.out.println("Enter the new contact's last name: ");
-        String lastName = input.nextLine();
-        String fullName = firstName + " " + lastName;
-        System.out.println("Enter your Phone Number: ");
-        String num = input.nextLine();
-        String contact = fullName + "\t| " + num + "\t| ";
+        System.out.println("Enter the new contact's full name: ");
+        String name = input.nextLine();
+        System.out.println("Enter the new contact's phone number: ");
+        String number = input.nextLine();
+        String contact = name + "\t| " + number + "\t| ";
         try {
             Files.write(
                     Paths.get("data", "contacts.txt"),
-                     Arrays.asList(contact),
+                    Arrays.asList(contact),
                     StandardOpenOption.APPEND
             );
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("New contact has been added!");
     }
 
-    public static void deleteContacts(String contact, String directory, String filename) {
+    public static void deleteContacts() {
+        System.out.println("Enter the name of the contact you would like to delete");
+        String delete = input.nextLine().trim().toLowerCase();
         try {
-            List<String> lines = Files.readAllLines(Paths.get(directory, filename));
+            List<String> lines = Files.readAllLines(Paths.get("data", "contacts.txt"));
             List<String> newList = new ArrayList<>();
             for (String line : lines) {
-                if (line.contains(contact)) {
-                    continue;
+                if (!line.toLowerCase().contains(delete)) {
+                    newList.add(line);
                 }
-                newList.add(line);
             }
             Files.write(Paths.get("data", "contacts.txt"), newList);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Contact has been deleted!");
+        input.nextLine();
     }
 
-    public static void searchContacts(String contact, String directory, String filename) {
+    public static void searchContacts() {
+        System.out.println("Enter the name of the contact you would like to search");
+        String search = input.nextLine().trim().toLowerCase();
+        System.out.println("Displaying " + search + "'s contact information");
         try {
-            List<String> lines = Files.readAllLines(Paths.get(directory, filename));
+            List<String> lines = Files.readAllLines(Paths.get("data", "contacts.txt"));
             List<String> newList = new ArrayList<>();
             for (String line : lines) {
-                if (line.contains(contact)) {
+                if (line.contains(search)) {
                     System.out.println(line);
                     continue;
                 }
